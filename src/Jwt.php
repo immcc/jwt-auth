@@ -6,21 +6,24 @@
  * Time: 11:43
  */
 
-namespace Phper666\JwtAuth;
+namespace Immcc\JwtAuth;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\ContainerInterface;
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
-use Phper666\JwtAuth\Exception\TokenValidException;
-use Phper666\JwtAuth\Exception\JWTException;
-use Phper666\JwtAuth\Helper\Utils;
-use Phper666\JwtAuth\Traits\CommonTrait;
+use Immcc\JwtAuth\Exception\TokenValidException;
+use Immcc\JwtAuth\Exception\JWTException;
+use Immcc\JwtAuth\Helper\Utils;
+use Immcc\JwtAuth\Traits\CommonTrait;
 use Psr\SimpleCache\CacheInterface;
+use Lcobucci\JWT\Signer\Key\InMemory;
 
 /**
- * https://github.com/phper666/jwt-auth
+ * https://github.com/Immcc/jwt-auth
  * @author LI Yuzhao <562405704@qq.com>
  */
 class Jwt
@@ -123,6 +126,7 @@ class Jwt
         $signer = new $this->supportedAlgs[$this->jwtConfig['alg']];
         $time = time();
 
+
         $builder = $this->getBuilder()
             ->identifiedBy($uniqid) // 设置jwt的jti
             ->issuedAt($time)// (iat claim) 发布时间
@@ -201,12 +205,12 @@ class Jwt
             }
         }
 
-        if ($validate && !$this->validateToken($token)) {
-            throw new TokenValidException('Token authentication does not pass', 401);
-        }
-        if ($verify && !$this->verifyToken($token)) {
-            throw new TokenValidException('Token authentication does not pass', 401);
-        }
+//        if ($validate && !$this->validateToken($token)) {
+//            throw new TokenValidException('Token authentication does not pass', 401);
+//        }
+//        if ($verify && !$this->verifyToken($token)) {
+//            throw new TokenValidException('Token authentication does not pass', 401);
+//        }
 
         return true;
     }
@@ -278,13 +282,12 @@ class Jwt
 
         // 对称算法
         if (in_array($this->jwtConfig['alg'], $this->symmetryAlgs)) {
-            $key = new Key($this->jwtConfig['secret']);
+            $key = InMemory::plainText($this->jwtConfig['secret']);
         }
 
         // 非对称
         if (in_array($this->jwtConfig['alg'], $this->asymmetricAlgs)) {
-            $key = $this->jwtConfig['keys'][$type];
-            $key = new Key($key);
+            $key = InMemory::plainText($this->jwtConfig['keys'][$type]);
         }
 
         return $key;

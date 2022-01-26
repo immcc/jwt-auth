@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Phper666\JwtAuth;
+namespace Immcc\JwtAuth;
 
 class ConfigProvider
 {

@@ -9,7 +9,7 @@
     "description": "jwt-auth Component",
     "autoload": {
         "psr-4": {
-            "Phper666\\JwtAuth\\": "src/"
+            "Immcc\\JwtAuth\\": "src/"
         }
     },
     "autoload-dev": {
@@ -37,7 +37,7 @@
     "scripts": {},
     "extra": {
         "hyperf": {
-            "config": "Phper666\\JwtAuth\\ConfigProvider"
+            "config": "Immcc\\JwtAuth\\ConfigProvider"
         }
     }
 }

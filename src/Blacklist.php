@@ -6,14 +6,14 @@
  * Time: 16:02
  */
 
-namespace Phper666\JwtAuth;
+namespace Immcc\JwtAuth;
 use Hyperf\Di\Annotation\Inject;
 use Lcobucci\JWT\Token;
-use Phper666\JwtAuth\Helper\Utils;
+use Immcc\JwtAuth\Helper\Utils;
 use Psr\SimpleCache\CacheInterface;
 
 /**
- * https://github.com/phper666/jwt-auth
+ * https://github.com/Immcc/jwt-auth
  * author LI Yuzhao <562405704@qq.com>
  */
 class Blacklist

@@ -5,41 +5,50 @@
  * Date: 2019-08-07
  * Time: 14:14
  */
-namespace Phper666\JwtAuth\Traits;
 
+namespace Immcc\JwtAuth\Traits;
+
+use Hyperf\Utils\ApplicationContext;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Claim\Factory as ClaimFactory;
+use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Parsing\Decoder;
 use Lcobucci\JWT\Parsing\Encoder;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\ValidationData;
 use Lcobucci\JWT\Token;
-use Phper666\JwtAuth\Exception\TokenValidException;
+use Immcc\JwtAuth\Exception\TokenValidException;
 
 trait CommonTrait
 {
     /**
-     * @see [[Lcobucci\JWT\Builder::__construct()]]
      * @return Builder
+     * @see [[Lcobucci\JWT\Builder::__construct()]]
      */
-    public function getBuilder(Encoder $encoder = null, ClaimFactory $claimFactory = null)
+    public function getBuilder()
     {
-        return new Builder($encoder, $claimFactory);
+        $config = ApplicationContext::getContainer()->get(Configuration::class);
+        assert($config instanceof Configuration);
+
+        return $config->builder();
     }
 
     /**
-     * @see [[Lcobucci\JWT\Parser::__construct()]]
      * @return Parser
+     * @see [[Lcobucci\JWT\Parser::__construct()]]
      */
     public function getParser(Decoder $decoder = null, ClaimFactory $claimFactory = null)
     {
-        return new Parser($decoder, $claimFactory);
+        $config = ApplicationContext::getContainer()->get(Configuration::class);
+        assert($config instanceof Configuration);
+
+        return $config->parser();
     }
 
     /**
-     * @see [[Lcobucci\JWT\ValidationData::__construct()]]
      * @return ValidationData
+     * @see [[Lcobucci\JWT\ValidationData::__construct()]]
      */
     public function getValidationData($currentTime = null)
     {
